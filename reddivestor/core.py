@@ -1,22 +1,17 @@
-from Spider import *
+from Spider import Spider
+from CryptoProcessor import CryptoProcessor
 import threading
 import time
 
-processor_dict = {}
-def show_process_dict():
-    while(True):
-        print("Showing contents of processor_dict...")
-        current_processor_dict_len = len(processor_dict.keys())
-        for key in processor_dict.keys():
-            print("Coin: " + key + " | Count: " + str(processor_dict[key]))
-        time.sleep(5)    
+
+processor = CryptoProcessor()
 
 def engine_start():
-    print("######## Spider Engine starting")
-
-    spider_cryptoCurrency = Spider(processor_dict, 'https://www.reddit.com/r/CryptoCurrencies/new/')
-    spider_cryptoCurrencyTrading = Spider(processor_dict, 'https://www.reddit.com/r/CryptoCurrencyTrading/new/')
-    spider_cryptoCryptoMarkets = Spider(processor_dict, 'https://www.reddit.com/r/CryptoMarkets/new/')
+    interval = 5
+    print("!!!! Spider Engine starting, initializing processors and spiders !!!!")
+    spider_cryptoCurrency = Spider(interval, 'https://www.reddit.com/r/CryptoCurrencies/new/', processor)
+    spider_cryptoCurrencyTrading = Spider(interval, 'https://www.reddit.com/r/CryptoCurrencyTrading/new/', processor)
+    spider_cryptoCryptoMarkets = Spider(interval, 'https://www.reddit.com/r/CryptoMarkets/new/', processor)
 
     thread = threading.Thread(target=spider_cryptoCurrency.crawlAndRefresh, args=())
     thread.daemon = True    
@@ -31,9 +26,6 @@ def engine_start():
     thread.start()
     thread2.start()
     thread3.start()
-
-    time.sleep(10) #let threads start...
-    show_process_dict()
        
 
     
@@ -42,7 +34,10 @@ def main():
     engine_start()
     while(True):
         print("Engine is up and running...")
-        time.sleep(5000)
+        print("Displaying contents of processor: ") 
+        print(" ")
+        time.sleep(20)
+        processor.display()
 
 if __name__ == "__main__":
     main()
