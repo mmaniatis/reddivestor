@@ -13,6 +13,7 @@ def show_process_dict():
 
 def engine_start():
     print("######## Spider Engine starting")
+
     spider_cryptoCurrency = Spider(processor_dict, 'https://www.reddit.com/r/CryptoCurrencies/new/')
     spider_cryptoCurrencyTrading = Spider(processor_dict, 'https://www.reddit.com/r/CryptoCurrencyTrading/new/')
     spider_cryptoCryptoMarkets = Spider(processor_dict, 'https://www.reddit.com/r/CryptoMarkets/new/')
