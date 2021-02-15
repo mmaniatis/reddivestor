@@ -1,5 +1,5 @@
-from Spider import Spider
-from CryptoProcessor import CryptoProcessor
+from com.src.Spider import Spider
+from com.src.CryptoProcessor import CryptoProcessor
 import threading
 import time
 
