@@ -15,7 +15,6 @@ class Spider:
         self.crawl_interval = crawl_interval
         self.pageSource = ""
         self.url = url
-        self.setUpDriver()
 
     def setUpDriver(self):
         try:
@@ -41,8 +40,7 @@ class Spider:
         self.driver.quit()
     
     def process_soup(self):
-        soup = BeautifulSoup(self.pageSource, 'lxml')
-        self.processor.handle(soup)
-        time.sleep(self.crawl_interval)
-        print("Refreshing page and re-crawling..")
-        self.driver.refresh()
+        if(self.pageSource != None and self.pageSource != ""):
+            soup = BeautifulSoup(self.pageSource, 'lxml')
+            self.processor.handle(soup)
+            time.sleep(self.crawl_interval)
