@@ -1,14 +1,28 @@
 from com.src.Spider import Spider
 from com.src.CryptoProcessor import CryptoProcessor
 from com.src.network.ApiRequester import ApiRequester
+from com.src.passwords import COINMARKETCAP_API_KEY
 import threading
 import time
 
+def init_processor() -> CryptoProcessor:
+    url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
+    parameters = {
+        'start':'1',
+        'limit':'5000',
+        'convert':'USD'
+    }
+    headers = {
+        'Accepts': 'application/json',
+        'X-CMC_PRO_API_KEY': COINMARKETCAP_API_KEY,
+    }
+    api_requester = ApiRequester(url, parameters, headers)
+    return CryptoProcessor(api_requester)
 
-processor = CryptoProcessor()
 
 def engine_start():
     interval = 5
+    processor = init_processor()
     print("!!!! Spider Engine starting, initializing processors and spiders !!!!")
     spider_cryptoCurrency = Spider(interval, 'https://www.reddit.com/r/CryptoCurrencies/new/', processor)
     spider_cryptoCurrency.setUpDriver()
@@ -35,7 +49,7 @@ def engine_start():
     
 
 def main():
-    api_requester = ApiRequester(None, None, None)
+    api_requester = init_processor()
     print(api_requester.get())
     # engine_start()
     # while(True):

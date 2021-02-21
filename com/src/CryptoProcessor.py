@@ -1,10 +1,11 @@
 from .Processor import Processor
 from bs4 import BeautifulSoup
+from com.src.network.ApiRequester import ApiRequester
 
 
 class CryptoProcessor(Processor):
     
-    def __init__(self):
+    def __init__(self, ApiRequester):
         super(CryptoProcessor, self).__init__()
         self.test_coin_list = ["btc", "bitcoin", "eth", "ethereum", "bch", "bitcoin cash", "bitcoincash", "satoshi", "xrp", "cardano", "ada", "binancecoin", "binance coin", "bnb", "litecoin", "ltc", "chainlink", "link"]
         self.seen_post_titles = []
@@ -21,6 +22,7 @@ class CryptoProcessor(Processor):
                             self.processor_dict[word] = self.processor_dict[word] + 1
                         break
             self.seen_post_titles.append(post)
+    
 
 #         Key: bitcoin | Count: 13
 # Key: btc | Count: 3

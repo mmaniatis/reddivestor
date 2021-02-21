@@ -17,13 +17,11 @@ class ApiRequester:
             'start':'1',
             'limit':'5000',
             'convert':'USD'
-        
         }
-        self.headers = {
 
+        self.headers = {
             'Accepts': 'application/json',
-            'X-CMC_PRO_API_KEY': COINMARKETCAP_API_KEY,       
-        
+            'X-CMC_PRO_API_KEY': COINMARKETCAP_API_KEY,
         }
 
         self.session = Session()
