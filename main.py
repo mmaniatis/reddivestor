@@ -5,6 +5,13 @@ from com.src.passwords import COINMARKETCAP_API_KEY
 import threading
 import time
 
+#TODO: Need to fix init.. put this into a config for sure.
+
+#TODO #2: need to get crypto processor coin list built as a dictionary with object: int
+# the object will contain coin name/symbol.. that's how i will track the count 
+
+#TODO #3: import above TODO's as issues on git hub.
+
 def init_processor() -> CryptoProcessor:
     url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
     parameters = {
