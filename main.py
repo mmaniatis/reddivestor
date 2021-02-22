@@ -12,24 +12,19 @@ import time
 
 #TODO #3: import above TODO's as issues on git hub.
 
-def init_processor() -> CryptoProcessor:
-    url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
-    parameters = {
-        'start':'1',
-        'limit':'5000',
-        'convert':'USD'
-    }
+def init_processor():
     headers = {
         'Accepts': 'application/json',
         'X-CMC_PRO_API_KEY': COINMARKETCAP_API_KEY,
     }
-    api_requester = ApiRequester(url, parameters, headers)
+    api_requester = ApiRequester(headers)
     return CryptoProcessor(api_requester)
 
+processor = init_processor()
 
 def engine_start():
     interval = 5
-    processor = init_processor()
+
     print("!!!! Spider Engine starting, initializing processors and spiders !!!!")
     spider_cryptoCurrency = Spider(interval, 'https://www.reddit.com/r/CryptoCurrencies/new/', processor)
     spider_cryptoCurrency.setUpDriver()
@@ -56,15 +51,13 @@ def engine_start():
     
 
 def main():
-    api_requester = init_processor()
-    print(api_requester.get())
-    # engine_start()
-    # while(True):
-    #     print("Engine is up and running...")
-    #     print("Displaying contents of processor: ") 
-    #     print(" ")
-    #     time.sleep(20)
-    #     processor.display()
+    engine_start()
+    while(True): 
+        print("Engine is up and running...")
+        print("Displaying contents of processor: ") 
+        print(" ")
+        time.sleep(20)
+        processor.display()
 
 if __name__ == "__main__":
     main()

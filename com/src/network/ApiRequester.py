@@ -4,21 +4,10 @@ from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
 
 class ApiRequester:
-    url = None
-    parameters = None
     headers = None
     session = None
 
-    def __init__(self, url: str, parameters: dict, headers: dict):
-        self.url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
-
-        self.parameters = {
-        
-            'start':'1',
-            'limit':'5000',
-            'convert':'USD'
-        }
-
+    def __init__(self,headers: dict):
         self.headers = {
             'Accepts': 'application/json',
             'X-CMC_PRO_API_KEY': COINMARKETCAP_API_KEY,
@@ -27,10 +16,11 @@ class ApiRequester:
         self.session = Session()
         self.session.headers.update(self.headers)
 
-    def get(self):
+    def get(self, url: str, parameters: dict):
         try:
-            response = self.session.get(self.url, params=self.parameters)
+            response = self.session.get(url, params=parameters)
             data = json.loads(response.text)
-            print(data)
+            return data
         except (ConnectionError, Timeout, TooManyRedirects) as e:
             print(e)
+            return None
