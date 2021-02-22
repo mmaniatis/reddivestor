@@ -12,6 +12,8 @@ class CryptoProcessor(Processor):
         self.seen_post_titles = []
         self.coin_hash_table = {}
         self.api_requester = api_requester
+        
+        #Have one processor for entire engine so this will only be called once in init().
         self.populate_coin_list()
 
     def handle(self, message: BeautifulSoup):
@@ -28,10 +30,9 @@ class CryptoProcessor(Processor):
                         #do a break at end so we can get to next post without double counting.
                         if(current_coin not in self.processor_dict.keys()):
                             self.processor_dict[current_coin] = 1
-                            currently_seen_coins.append(current_coin)
                         else:
                             self.processor_dict[current_coin] = self.processor_dict[current_coin] + 1
-                            currently_seen_coins.append(current_coin)
+                        currently_seen_coins.append(current_coin)
             self.seen_post_titles.append(post)
         
 
@@ -48,4 +49,3 @@ class CryptoProcessor(Processor):
         for coin in data:
             self.coin_hash_table[coin['name']] = coin['name']
             self.coin_hash_table[coin['symbol']] = coin['name']
-            
