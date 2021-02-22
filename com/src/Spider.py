@@ -10,6 +10,7 @@ class Spider:
     pageSource = None
     driver = None
     url = None
+    
     def __init__(self, crawl_interval: int, url: str, processor: Processor):
         self.processor = processor
         self.crawl_interval = crawl_interval
@@ -22,6 +23,7 @@ class Spider:
             options.add_argument('--ignore-certificate-errors')
             options.add_argument('--incognito')
             options.add_argument('--headless')
+            # options.add_argument("--window-size=1920,1080")
             self.driver = webdriver.Chrome(options=options, executable_path='/usr/local/bin/chromedriver')
             self.driver.get(self.url)
             print("Driver set up correctly.")
