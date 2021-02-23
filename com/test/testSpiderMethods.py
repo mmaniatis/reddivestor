@@ -3,6 +3,7 @@ from com.src.CryptoProcessor import CryptoProcessor
 from com.src.Spider import Spider
 from com.src.network.ApiRequester import ApiRequester
 from unittest.mock import MagicMock
+from com.test.testUtil import *
 
 class TestSpiderMethods(unittest.TestCase):
     mock_api_requester = ApiRequester()
@@ -33,26 +34,6 @@ class TestSpiderMethods(unittest.TestCase):
         self.assertEqual(len(spider.processor.processor_dict.keys()), 0)
 
 #TODO: GenerateComplexTestHTML.. waiting on issue #16
-
-def generateSimpleTestHTML3Mentions():
-    return "<html> \
-                <h3>Ethereum is fantastic.</h3> \
-                    <div> \
-                    <div><p> Insert dummy text here </p> </div> \
-                     </div> \
-                <h3>I Like LINK because i like defi</h3> \
-                    <div> \
-                    <div><p> Do you like it too? </p> </div> \
-                     </div> \
-                <h3>I like coins</h3> \
-                    <div> \
-                    <div><p> LTC is great!</p> </div> \
-                     </div> \
-            </html>"
-
-def generateTestCoinJSONResponse():
-    result = {'data': [{'name': 'Litecoin', 'symbol':'LTC'}, {'name': 'Ethereum', 'symbol':'ETH'}, {'name': 'Chainlink', 'symbol':'LINK'}] }
-    return result
 
 if __name__ == '__main__':
     unittest.main()

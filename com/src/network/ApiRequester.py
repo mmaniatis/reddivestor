@@ -13,9 +13,6 @@ class ApiRequester:
             'X-CMC_PRO_API_KEY': COINMARKETCAP_API_KEY,
         }
 
-        self.session = Session()
-        self.session.headers.update(self.headers)
-
     def get(self, url: str, parameters: dict):
         try:
             response = self.session.get(url, params=parameters)
@@ -24,3 +21,10 @@ class ApiRequester:
         except (ConnectionError, Timeout, TooManyRedirects) as e:
             print(e)
             return None
+    
+    def close(self):
+        self.session.close()
+    
+    def open(self):
+        self.session = Session()
+        self.session.headers.update(self.headers)
