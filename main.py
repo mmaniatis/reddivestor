@@ -8,11 +8,7 @@ import time
 #TODO: Need to fix init.. put this into a config for sure.
 
 def init_processor():
-    headers = {
-        'Accepts': 'application/json',
-        'X-CMC_PRO_API_KEY': COINMARKETCAP_API_KEY,
-    }
-    api_requester = ApiRequester(headers)
+    api_requester = ApiRequester()
     return CryptoProcessor(api_requester)
 
 processor = init_processor()
