@@ -7,7 +7,7 @@ class ApiRequester:
     headers = None
     session = None
 
-    def __init__(self,headers: dict):
+    def __init__(self):
         self.headers = {
             'Accepts': 'application/json',
             'X-CMC_PRO_API_KEY': COINMARKETCAP_API_KEY,
