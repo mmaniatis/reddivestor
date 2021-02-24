@@ -1,13 +1,12 @@
 # Reddivestor
-web crawler that will be used for a new app that tracks investments on reddit
 
+Micro-Service that will scrape/crawl reddit looking for mentions of crypto currencies (this list comes from CoinMarketCap API.)
 
-Very early stages of development.. Just getting the crawler to be up and running, then the road map :
+It will then process the mentions into a hash table containing the coin name, and the count. 
 
-1. Refactor the crawler and implement unit tests
-2. Begin saving the data in a persistent data store (MongoDB)
-3. process the data
-4. Create website / chrome app / some form of way to display processed info.
+From here it will insert said hash table information into a persisted data structure.
+
+There will be a seperate micro service API that will access table. It's out of scope for this crawler. 
 
 
 Instructions to use:
