@@ -14,6 +14,8 @@ class CryptoProcessor(Processor):
         self.api_requester = api_requester
         
         #Have one processor for entire engine so this will only be called once in init().
+
+        #self.populate_coin_list_offline()
         self.populate_coin_hash()
 
     def handle(self, message: BeautifulSoup):
@@ -38,6 +40,7 @@ class CryptoProcessor(Processor):
     #Purpose of method is to call api_requester, which will need to be refactored to take url as param.. but anyways,
     #i am storing all coins as a hash table as the look ups are instant, and i want to hash 
     #symbols to name 
+
     def populate_coin_hash(self):
         try:
             self.api_requester.open()
@@ -55,3 +58,7 @@ class CryptoProcessor(Processor):
                 for coin in data:
                     self.coin_hash_table[coin['name']] = coin['name']
                     self.coin_hash_table[coin['symbol']] = coin['name']
+    
+    def populate_coin_list_offline(self):
+        self.coin_hash_table = {"BTC": "BITCOIN", "BITCOIN":"BITCOIN", "ETH": "Ethereum", "Etherum":"ETH", "BCH": "Bitcoin Cash", "Bitcoin Cash": "BCH"}
+
