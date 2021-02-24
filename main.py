@@ -43,7 +43,7 @@ def engine_start():
 
 def main():
     engine_start()
-    while(True): 
+    while(True):
         print("Engine is up and running...")
         print("Displaying contents of processor: ") 
         print(" ")

@@ -14,7 +14,7 @@ class CryptoProcessor(Processor):
         self.api_requester = api_requester
         
         #Have one processor for entire engine so this will only be called once in init().
-        self.populate_coin_list()
+        self.populate_coin_list_offline()
 
     def handle(self, message: BeautifulSoup):
         for message_item in message.findAll(['p','h3']):
@@ -49,3 +49,6 @@ class CryptoProcessor(Processor):
         for coin in data:
             self.coin_hash_table[coin['name']] = coin['name']
             self.coin_hash_table[coin['symbol']] = coin['name']
+
+    def populate_coin_list_offline(self):
+        self.coin_hash_table = {"BTC": "BITCOIN", "BITCOIN":"BITCOIN", "ETH": "Ethereum", "Etherum":"ETH", "BCH": "Bitcoin Cash", "Bitcoin Cash": "BCH"}

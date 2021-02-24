@@ -1,38 +1,39 @@
-name: reddivestor
-channels:
-  - defaults
-dependencies:
-  - brotlipy=0.7.0=py38h9ed2024_1003
-  - ca-certificates=2021.1.19=hecd8cb5_0
-  - certifi=2020.12.5=py38hecd8cb5_0
-  - cffi=1.14.5=py38h2125817_0
-  - chardet=4.0.0=py38hecd8cb5_1003
-  - conda=4.9.2=py38hecd8cb5_0
-  - conda-package-handling=1.7.2=py38h22f3db7_0
-  - cryptography=3.3.1=py38hbcfaee0_1
-  - idna=2.10=pyhd3eb1b0_0
-  - libcxx=10.0.0=1
-  - libedit=3.1.20191231=h1de35cc_1
-  - libffi=3.3=hb1e8313_2
-  - ncurses=6.2=h0a44026_1
-  - openssl=1.1.1j=h9ed2024_0
-  - pip=21.0.1=py38hecd8cb5_0
-  - pycosat=0.6.3=py38h1de35cc_1
-  - pycparser=2.20=py_2
-  - pyopenssl=20.0.1=pyhd3eb1b0_1
-  - pysocks=1.7.1=py38_1
-  - python=3.8.5=h26836e1_1
-  - readline=8.1=h9ed2024_0
-  - requests=2.25.1=pyhd3eb1b0_0
-  - ruamel_yaml=0.15.87=py38haf1e3a3_1
-  - setuptools=52.0.0=py38hecd8cb5_0
-  - six=1.15.0=py38hecd8cb5_0
-  - sqlite=3.33.0=hffcf06c_0
-  - tk=8.6.10=hb0a8c7a_0
-  - tqdm=4.56.0=pyhd3eb1b0_0
-  - urllib3=1.26.3=pyhd3eb1b0_0
-  - wheel=0.36.2=pyhd3eb1b0_0
-  - xz=5.2.5=h1de35cc_0
-  - yaml=0.2.5=haf1e3a3_0
-  - zlib=1.2.11=h1de35cc_3
-prefix: envs/reddivestor
+# This file may be used to create an environment using:
+# $ conda create --name <env> --file <this file>
+# platform: osx-64
+beautifulsoup4=4.9.3=pyha847dfd_0
+brotlipy=0.7.0=py38h9ed2024_1003
+bs4=4.9.3=hd3eb1b0_0
+ca-certificates=2021.1.19=hecd8cb5_0
+certifi=2020.12.5=py38hecd8cb5_0
+cffi=1.14.5=py38h2125817_0
+chardet=4.0.0=py38hecd8cb5_1003
+cryptography=3.3.1=py38hbcfaee0_1
+icu=58.2=h0a44026_3
+idna=2.10=pyhd3eb1b0_0
+libcxx=10.0.0=1
+libedit=3.1.20191231=h1de35cc_1
+libffi=3.3=hb1e8313_2
+libiconv=1.16=h1de35cc_0
+libxml2=2.9.10=h7cdb67c_3
+libxslt=1.1.34=h83b36ba_0
+lxml=4.6.2=py38h26b266a_0
+ncurses=6.2=h0a44026_1
+openssl=1.1.1j=h9ed2024_0
+pip=21.0.1=py38hecd8cb5_0
+pycparser=2.20=py_2
+pyopenssl=20.0.1=pyhd3eb1b0_1
+pysocks=1.7.1=py38_1
+python=3.8.5=h26836e1_1
+readline=8.1=h9ed2024_0
+requests=2.25.1=pyhd3eb1b0_0
+selenium=3.141.0=py38h1de35cc_1001
+setuptools=52.0.0=py38hecd8cb5_0
+six=1.15.0=py38hecd8cb5_0
+soupsieve=2.2=pyhd3eb1b0_0
+sqlite=3.33.0=hffcf06c_0
+tk=8.6.10=hb0a8c7a_0
+urllib3=1.26.3=pyhd3eb1b0_0
+wheel=0.36.2=pyhd3eb1b0_0
+xz=5.2.5=h1de35cc_0
+zlib=1.2.11=h1de35cc_3
