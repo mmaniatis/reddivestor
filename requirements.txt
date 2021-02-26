@@ -17,3 +17,5 @@ six
 soupsieve 
 tqdm 
 urllib3
+pymongo
+dnspython
