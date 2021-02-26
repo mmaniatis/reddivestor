@@ -9,7 +9,7 @@ import time
 
 def init_processor():
     api_requester = ApiRequester()
-    return CryptoProcessor(api_requester)
+    return CryptoProcessor(api_requester, None)
 
 processor = init_processor()
 

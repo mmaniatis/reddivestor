@@ -1,22 +1,25 @@
 from .Processor import Processor
 from bs4 import BeautifulSoup
 from com.src.network.ApiRequester import ApiRequester
+from com.src.persist.IDatastore import IDatastore
+from com.src.model.CryptoEntry import CryptoEntry
+import datetime
 
 class CryptoProcessor(Processor):
     coin_hash_table = None
     seen_post_titles = None
     api_requester = None
-
-    def __init__(self, api_requester: ApiRequester):
+    datastore = None
+    def __init__(self, api_requester: ApiRequester, datastore: IDatastore):
         super(CryptoProcessor, self).__init__()
         self.seen_post_titles = []
         self.coin_hash_table = {}
         self.api_requester = api_requester
-        
+        self.datastore = datastore
         #Have one processor for entire engine so this will only be called once in init().
 
-        #self.populate_coin_list_offline()
-        self.populate_coin_hash()
+        self.populate_coin_list_offline()
+        # self.populate_coin_hash()
 
     def handle(self, message: BeautifulSoup):
         for message_item in message.findAll(['p','h3']):
@@ -30,10 +33,9 @@ class CryptoProcessor(Processor):
                         current_coin = self.coin_hash_table[word]
                         #if word is seen then either add to dict, or increment by one 
                         #do a break at end so we can get to next post without double counting.
-                        if(current_coin not in self.processor_dict.keys()):
-                            self.processor_dict[current_coin] = 1
-                        else:
-                            self.processor_dict[current_coin] = self.processor_dict[current_coin] + 1
+                        crypto_entry = CryptoEntry(len(post), current_coin, "place_holder", datetime.datetime.now())
+                        crypto_entry.display()
+                        self.datastore.insert(crypto_entry)                     
                         currently_seen_coins.append(current_coin)
             self.seen_post_titles.append(post)
         
@@ -60,5 +62,5 @@ class CryptoProcessor(Processor):
                     self.coin_hash_table[coin['symbol']] = coin['name']
     
     def populate_coin_list_offline(self):
-        self.coin_hash_table = {"BTC": "BITCOIN", "BITCOIN":"BITCOIN", "ETH": "Ethereum", "Etherum":"ETH", "BCH": "Bitcoin Cash", "Bitcoin Cash": "BCH"}
+        self.coin_hash_table = {"BTC": "Bitcoin", "Bitcoin":"Bitcoin", "ETH": "Ethereum", "Ethereum":"Ethereum", "BCH": "Bitcoin Cash", "Bitcoin Cash": "BCH", "Litecoin":"Litecoin", "LTC": "Litecoin", "Chainlink": "Chainlink", "LINK": "Chainlink"}
 
