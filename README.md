@@ -1,10 +1,23 @@
 # Reddivestor
-web crawler that will be used for a new app that tracks investments on reddit
+
+Micro-Service that will scrape/crawl reddit looking for mentions of crypto currencies (this list comes from CoinMarketCap API.)
+
+It will then process the mentions into a hash table containing the coin name, and the count. 
+
+From here it will insert said hash table information into a persisted data structure.
+
+There will be a seperate micro service API that will access table. It's out of scope for this crawler. 
 
 
-Very early stages of development.. Just getting the crawler to be up and running, then the road map :
+Instructions to use:
 
-1. Refactor the crawler and implement unit tests
-2. Begin saving the data in a persistent data store (MongoDB)
-3. process the data
-4. Create website / chrome app / some form of way to display processed info.
+CONDA:
+  1. conda create env -f environment.yml (Maybe you need to change the prefix on that file.. check to see)
+  2. conda activate your_env (<-- from prefix)
+  3. python3 main.py
+
+DOCKER:
+
+  docker build -t reddivestor .
+  docker run reddivestor
+ 
