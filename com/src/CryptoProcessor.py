@@ -1,7 +1,7 @@
 from .Processor import Processor
 from bs4 import BeautifulSoup
 from com.src.network.ApiRequester import ApiRequester
-from com.src.persist.IDatastore import IDatastore
+from com.src.persist.Datastore import Datastore
 from com.src.model.CryptoEntry import CryptoEntry
 import datetime
 
@@ -10,7 +10,7 @@ class CryptoProcessor(Processor):
     seen_post_titles = None
     api_requester = None
     datastore = None
-    def __init__(self, api_requester: ApiRequester, datastore: IDatastore):
+    def __init__(self, api_requester: ApiRequester, datastore: Datastore):
         super(CryptoProcessor, self).__init__()
         self.seen_post_titles = []
         self.coin_hash_table = {}
@@ -27,13 +27,9 @@ class CryptoProcessor(Processor):
             currently_seen_coins = []
             if(post not in self.seen_post_titles):
                 for word in post.split(" "):
-                    # keeping word case sensitive for now until i find solution to issue of common words being used as coin symbols (the thecoin)
-                    # as i iterate over the sentence i don't want to revisit previously seen coins.
                     if (word not in currently_seen_coins and word in self.coin_hash_table):
                         current_coin = self.coin_hash_table[word]
-                        #if word is seen then either add to dict, or increment by one 
-                        #do a break at end so we can get to next post without double counting.
-                        crypto_entry = CryptoEntry(len(post), current_coin, "place_holder", datetime.datetime.now())
+                        crypto_entry = CryptoEntry(len(post), current_coin, "", datetime.datetime.now())
                         crypto_entry.display()
                         self.datastore.insert(crypto_entry)                     
                         currently_seen_coins.append(current_coin)
