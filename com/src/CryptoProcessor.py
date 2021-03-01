@@ -29,7 +29,7 @@ class CryptoProcessor(Processor):
                 for word in post.split(" "):
                     if (word not in currently_seen_coins and word in self.coin_hash_table):
                         current_coin = self.coin_hash_table[word]
-                        crypto_entry = CryptoEntry(len(post), current_coin, "", datetime.datetime.now())
+                        crypto_entry = CryptoEntry(post, current_coin, "", datetime.datetime.now())
                         crypto_entry.display()
                         self.datastore.insert(crypto_entry)                     
                         currently_seen_coins.append(current_coin)
