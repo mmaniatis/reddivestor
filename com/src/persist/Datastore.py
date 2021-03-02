@@ -1,6 +1,6 @@
 from com.src.model.CryptoEntry import CryptoEntry
 
-class IDatastore:
+class Datastore:
     # def select(self, params):
     #     # select from table
     

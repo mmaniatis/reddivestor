@@ -1,21 +1,24 @@
 from .Processor import Processor
 from bs4 import BeautifulSoup
 from com.src.network.ApiRequester import ApiRequester
+from com.src.persist.Datastore import Datastore
+from com.src.model.CryptoEntry import CryptoEntry
+import datetime
 
 class CryptoProcessor(Processor):
     coin_hash_table = None
     seen_post_titles = None
     api_requester = None
+    datastore = None
 
-    def __init__(self, api_requester: ApiRequester):
+    def __init__(self, api_requester: ApiRequester, datastore: Datastore):
         super(CryptoProcessor, self).__init__()
         self.seen_post_titles = []
         self.coin_hash_table = {}
         self.api_requester = api_requester
-        
+        self.datastore = datastore
         #Have one processor for entire engine so this will only be called once in init().
 
-        #self.populate_coin_list_offline()
         self.populate_coin_hash()
 
     def handle(self, message: BeautifulSoup):
@@ -24,23 +27,16 @@ class CryptoProcessor(Processor):
             currently_seen_coins = []
             if(post not in self.seen_post_titles):
                 for word in post.split(" "):
-                    # keeping word case sensitive for now until i find solution to issue of common words being used as coin symbols (the thecoin)
-                    # as i iterate over the sentence i don't want to revisit previously seen coins.
                     if (word not in currently_seen_coins and word in self.coin_hash_table):
                         current_coin = self.coin_hash_table[word]
-                        #if word is seen then either add to dict, or increment by one 
-                        #do a break at end so we can get to next post without double counting.
-                        if(current_coin not in self.processor_dict.keys()):
-                            self.processor_dict[current_coin] = 1
-                        else:
-                            self.processor_dict[current_coin] = self.processor_dict[current_coin] + 1
+                        crypto_entry = CryptoEntry(post, current_coin, "", datetime.datetime.now())
+                        self.datastore.insert(crypto_entry)                     
                         currently_seen_coins.append(current_coin)
             self.seen_post_titles.append(post)
         
     #Purpose of method is to call api_requester, which will need to be refactored to take url as param.. but anyways,
     #i am storing all coins as a hash table as the look ups are instant, and i want to hash 
     #symbols to name 
-
     def populate_coin_hash(self):
         try:
             self.api_requester.open()
@@ -60,5 +56,5 @@ class CryptoProcessor(Processor):
                     self.coin_hash_table[coin['symbol']] = coin['name']
     
     def populate_coin_list_offline(self):
-        self.coin_hash_table = {"BTC": "BITCOIN", "BITCOIN":"BITCOIN", "ETH": "Ethereum", "Etherum":"ETH", "BCH": "Bitcoin Cash", "Bitcoin Cash": "BCH"}
+        self.coin_hash_table = {"BTC": "Bitcoin", "Bitcoin":"Bitcoin", "ETH": "Ethereum", "Ethereum":"Ethereum", "BCH": "Bitcoin Cash", "Bitcoin Cash": "BCH", "Litecoin":"Litecoin", "LTC": "Litecoin", "Chainlink": "Chainlink", "LINK": "Chainlink"}
 
