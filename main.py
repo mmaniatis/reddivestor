@@ -1,6 +1,7 @@
 from com.src.Spider import Spider
 from com.src.CryptoProcessor import CryptoProcessor
 from com.src.network.ApiRequester import ApiRequester
+from com.src.persist.MongoDatastore import MongoDatastore
 from com.src.passwords import COINMARKETCAP_API_KEY
 import threading
 import time
@@ -9,7 +10,8 @@ import time
 
 def init_processor():
     api_requester = ApiRequester()
-    return CryptoProcessor(api_requester, None)
+    mongo_datastore = MongoDatastore()
+    return CryptoProcessor(api_requester, mongo_datastore)
 
 processor = init_processor()
 
