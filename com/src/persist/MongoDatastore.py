@@ -25,6 +25,10 @@ class MongoDatastore(Datastore):
         print("###########")
         crypto_entry.display()
         print("###########")
+
+    def get(self, tstamp):
+        return self.crypto_col.find({'timestamp': {'$gt': tstamp}})
+        #Should get all then filter, or do a get where.. ??
     
     def display_crypto_col(self):
         print("Displaying currently tracked crypto records: ")
