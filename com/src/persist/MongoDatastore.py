@@ -16,11 +16,11 @@ class MongoDatastore(Datastore):
 
 
     def insert(self, crypto_entry: CryptoEntry):
-        # self.crypto_col.insert({
-        #     'post': crypto_entry.post, 
-        #     'name': crypto_entry.coin, 
-        #     'sub_reddit': crypto_entry.sub_reddit,
-        #     'timestamp': crypto_entry.timestamp })
+        self.crypto_col.insert({
+            'post': crypto_entry.post, 
+            'name': crypto_entry.coin, 
+            'sub_reddit': crypto_entry.sub_reddit,
+            'timestamp': crypto_entry.timestamp })
         print("INSERTING: ")
         print("###########")
         crypto_entry.display()
