@@ -18,7 +18,7 @@ processor.populate_coin_hash()
 processor.populate_seen_post_titles()
 
 def engine_start():
-    interval = 5
+    interval = 2000 #milliseconds
 
     print("!!!! Spider Engine starting, initializing processors and spiders !!!!")
     spider_cryptoCurrency = Spider(interval, 'https://www.reddit.com/r/CryptoCurrencies/new/', processor)
@@ -49,10 +49,7 @@ def main():
     engine_start()
     while(True):
         print("Engine is up and running...")
-        print("Displaying contents of processor: ") 
-        print(" ")
-        time.sleep(20)
-        processor.display()
+        time.sleep(500)
 
 if __name__ == "__main__":
     main()
