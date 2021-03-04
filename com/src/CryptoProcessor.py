@@ -56,8 +56,9 @@ class CryptoProcessor(Processor):
     def populate_seen_post_titles(self):
         # Append posts from past 3 days to ensure absolutely no duplicates.
         crypto_entries = self.datastore.get(datetime.datetime.now() - timedelta(hours=72))
-        for entry in crypto_entries:
-            self.seen_post_titles.append(entry['post'])
+        if(crypto_entries != None and len(crypto_entries) > 0):
+            for entry in crypto_entries:
+                self.seen_post_titles.append(entry['post'])
 
     def populate_coin_list_offline(self):
         self.coin_hash_table = {"BTC": "Bitcoin", "Bitcoin":"Bitcoin", "ETH": "Ethereum", "Ethereum":"Ethereum", "BCH": "Bitcoin Cash", "Bitcoin Cash": "BCH", "Litecoin":"Litecoin", "LTC": "Litecoin", "Chainlink": "Chainlink", "LINK": "Chainlink"}
