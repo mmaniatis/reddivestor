@@ -12,7 +12,7 @@ class CryptoProcessor(Processor):
     api_requester = None
     datastore = None
 
-    def __init__(self, api_requester: ApiRequester, datastore):
+    def __init__(self, api_requester: ApiRequester, datastore: Datastore):
         super(CryptoProcessor, self).__init__()
         self.seen_post_titles = []
         self.coin_hash_table = {}
