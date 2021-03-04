@@ -4,6 +4,8 @@ from com.src.network.ApiRequester import ApiRequester
 from com.src.persist.Datastore import Datastore
 from com.src.model.CryptoEntry import CryptoEntry
 import datetime
+from datetime import timedelta
+import re
 
 class CryptoProcessor(Processor):
     coin_hash_table = None
@@ -17,9 +19,6 @@ class CryptoProcessor(Processor):
         self.coin_hash_table = {}
         self.api_requester = api_requester
         self.datastore = datastore
-        #Have one processor for entire engine so this will only be called once in init().
-
-        self.populate_coin_hash()
 
     def handle(self, message: BeautifulSoup):
         for message_item in message.findAll(['p','h3']):
@@ -27,10 +26,11 @@ class CryptoProcessor(Processor):
             currently_seen_coins = []
             if(post not in self.seen_post_titles):
                 for word in post.split(" "):
-                    if (word not in currently_seen_coins and word in self.coin_hash_table):
-                        current_coin = self.coin_hash_table[word]
+                    cleaned_word = re.sub('[^A-Za-z0-9]+', '', word).strip()
+                    if (cleaned_word in self.coin_hash_table and self.coin_hash_table[cleaned_word] not in currently_seen_coins):
+                        current_coin = self.coin_hash_table[cleaned_word]
                         crypto_entry = CryptoEntry(post, current_coin, "", datetime.datetime.now())
-                        self.datastore.insert(crypto_entry)                     
+                        self.datastore.insert(crypto_entry)         
                         currently_seen_coins.append(current_coin)
             self.seen_post_titles.append(post)
         
@@ -55,6 +55,12 @@ class CryptoProcessor(Processor):
                     self.coin_hash_table[coin['name']] = coin['name']
                     self.coin_hash_table[coin['symbol']] = coin['name']
     
+    def populate_seen_post_titles(self):
+        # Append posts from past 3 days to ensure absolutely no duplicates.
+        crypto_entries = self.datastore.get(datetime.datetime.now() - timedelta(hours=72))
+        if(crypto_entries != None):
+            for entry in crypto_entries:
+                self.seen_post_titles.append(entry['post'])
+
     def populate_coin_list_offline(self):
         self.coin_hash_table = {"BTC": "Bitcoin", "Bitcoin":"Bitcoin", "ETH": "Ethereum", "Ethereum":"Ethereum", "BCH": "Bitcoin Cash", "Bitcoin Cash": "BCH", "Litecoin":"Litecoin", "LTC": "Litecoin", "Chainlink": "Chainlink", "LINK": "Chainlink"}
-

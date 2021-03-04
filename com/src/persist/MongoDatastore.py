@@ -16,15 +16,18 @@ class MongoDatastore(Datastore):
 
 
     def insert(self, crypto_entry: CryptoEntry):
-        # self.crypto_col.insert({
-        #     'post': crypto_entry.post, 
-        #     'name': crypto_entry.coin, 
-        #     'sub_reddit': crypto_entry.sub_reddit,
-        #     'timestamp': crypto_entry.timestamp })
+        self.crypto_col.insert({
+            'post': crypto_entry.post, 
+            'name': crypto_entry.coin, 
+            'sub_reddit': crypto_entry.sub_reddit,
+            'timestamp': crypto_entry.timestamp })
         print("INSERTING: ")
         print("###########")
         crypto_entry.display()
         print("###########")
+
+    def get(self, tstamp):
+        return self.crypto_col.find({'timestamp': {'$gt': tstamp}})
     
     def display_crypto_col(self):
         print("Displaying currently tracked crypto records: ")

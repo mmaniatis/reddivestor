@@ -15,5 +15,4 @@ def generateSimpleTestHTML3Mentions():
             </html>"
 
 def generateTestCoinJSONResponse():
-    result = {'data': [{'name': 'Litecoin', 'symbol':'LTC'}, {'name': 'Ethereum', 'symbol':'ETH'}, {'name': 'Chainlink', 'symbol':'LINK'}] }
-    return result
+    return {'data': [{'name': 'Litecoin', 'symbol':'LTC'}, {'name': 'Ethereum', 'symbol':'ETH'}, {'name': 'Chainlink', 'symbol':'LINK'}] }
