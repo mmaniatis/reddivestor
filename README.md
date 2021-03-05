@@ -11,14 +11,22 @@ There will be a seperate micro service API that will access table. It's out of s
 
 Instructions to use:
 
-CONDA:
-  1. conda create env -f environment.yml (Maybe you need to change the prefix on that file.. check to see)
-  2. conda activate your_env (<-- from prefix)
-  3. python3 main.py
+You will need two ENV Variables:
 
-DOCKER:
+  MONGO_PASSWORD
+  COINMARKETCAP_API_KEY
 
-  docker build -t reddivestor .
-  docker run reddivestor
- 
-ssh -i "reddivestor_key_pair.pem" ec2-user@ec2-3-139-98-217.us-east-2.compute.amazonaws.com
+From here you can do typical docker commands. export such as,
+
+
+git clone
+docker build -t image_name .
+
+export MONGO_PASSWORD=YOUR_PASS
+export COINMARKETCAP_API_KEY=YOUR_KEY
+
+docker run -e MONGO_PASSWORD -e COINMARKETCAP_API_KEY image_name
+
+or 
+
+docker run --env-list .env image_name (add to .env file)
