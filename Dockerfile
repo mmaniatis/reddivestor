@@ -22,6 +22,9 @@ RUN python -m pip install -r requirements.txt
 
 EXPOSE 80
 
+RUN export MONGO_PASSWORD
+RUN export COINMARKETCAP_API_KEY
+
 # run python -u so we can see input.
 CMD ["python3", "-u", "main.py"]
 
