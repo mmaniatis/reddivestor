@@ -130,7 +130,6 @@ dmypy.json
 .pyre/
 
 .vs*
-*Passwords.py
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
