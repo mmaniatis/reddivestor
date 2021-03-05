@@ -21,3 +21,4 @@ DOCKER:
   docker build -t reddivestor .
   docker run reddivestor
  
+ssh -i "reddivestor_key_pair.pem" ec2-user@ec2-3-139-98-217.us-east-2.compute.amazonaws.com

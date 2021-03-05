@@ -20,6 +20,8 @@ WORKDIR /app
 RUN pip install --upgrade pip
 RUN python -m pip install -r requirements.txt
 
+EXPOSE 80
+
 # run python -u so we can see input.
 CMD ["python3", "-u", "main.py"]
 
