@@ -35,9 +35,12 @@ class Spider:
         return True
 
     def crawlAndRefresh(self):
+        print("Starting the crawl of: " + str(self.url))
         while True:
             self.pageSource = self.driver.page_source
             self.process_soup()
+            print("!!! process_soup() complete, hibernating for.. " + str(self.crawl_interval))
+            time.sleep(self.crawl_interval)
             self.driver.refresh()
             print("Refreshing page and re-crawling..")
         self.driver.quit()
@@ -46,4 +49,3 @@ class Spider:
         if(self.pageSource != None and self.pageSource != ""):
             soup = BeautifulSoup(self.pageSource, 'lxml')
             self.processor.handle(soup)
-            time.sleep(self.crawl_interval)
