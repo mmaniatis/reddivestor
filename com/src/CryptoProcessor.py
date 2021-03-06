@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from com.src.network.ApiRequester import ApiRequester
 from com.src.persist.Datastore import Datastore
 from com.src.model.CryptoEntry import CryptoEntry
+from com.src.coin_hash_constant import COIN_DICT
 import datetime
 from datetime import timedelta
 import re
@@ -63,4 +64,4 @@ class CryptoProcessor(Processor):
                 self.seen_post_titles.append(entry['post'])
 
     def populate_coin_list_offline(self):
-        self.coin_hash_table = {"BTC": "Bitcoin", "Bitcoin":"Bitcoin", "ETH": "Ethereum", "Ethereum":"Ethereum", "BCH": "Bitcoin Cash", "Bitcoin Cash": "BCH", "Litecoin":"Litecoin", "LTC": "Litecoin", "Chainlink": "Chainlink", "LINK": "Chainlink"}
+        self.coin_hash_table = COIN_DICT
