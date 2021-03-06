@@ -14,7 +14,7 @@ def init_processor():
     return CryptoProcessor(api_requester, mongo_datastore)
 
 processor = init_processor()
-processor.populate_coin_hash()
+processor.populate_coin_list_offline()
 processor.populate_seen_post_titles()
 
 def engine_start():
