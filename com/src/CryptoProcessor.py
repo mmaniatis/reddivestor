@@ -21,7 +21,7 @@ class CryptoProcessor(Processor):
         self.api_requester = api_requester
         self.datastore = datastore
 
-    def handle(self, message: BeautifulSoup):
+    def handle(self, message: BeautifulSoup, url: str):
         for message_item in message.findAll(['p','h3']):
             post = message_item.text
             currently_seen_coins = []
@@ -30,7 +30,7 @@ class CryptoProcessor(Processor):
                     cleaned_word = re.sub('[^A-Za-z0-9]+', '', word).strip()
                     if (cleaned_word in self.coin_hash_table and self.coin_hash_table[cleaned_word] not in currently_seen_coins):
                         current_coin = self.coin_hash_table[cleaned_word]
-                        crypto_entry = CryptoEntry(post, current_coin, "", datetime.datetime.now())
+                        crypto_entry = CryptoEntry(post, current_coin, url, datetime.datetime.now())
                         self.datastore.insert(crypto_entry)         
                         currently_seen_coins.append(current_coin)
             self.seen_post_titles.append(post)

@@ -40,7 +40,7 @@ class TestCryptoProcessorMethods(unittest.TestCase):
                     <div><p> LTC is great!</p> </div> \
                      </div> \
             </html>", 'lxml')
-        crypto_processor.handle(soup)
+        crypto_processor.handle(soup, "TestSubReddit.com"))
         self.assertTrue(mock_mongo_datastore.insert.call_count, 3)
 
     @mock.patch('com.src.persist.MongoDatastore.MongoDatastore')
@@ -73,7 +73,7 @@ class TestCryptoProcessorMethods(unittest.TestCase):
                     <div><p> Google searches for Cardano breaks new high records, following breaking all-time high price, as retail investors surge towards ADA. The number of Google for ADA hit the roof since the beginning of February. The search interest for ADA increased with predictions around the crypto assets, which projected the value to more than double by March 6th, 2021. ADA has Increased about 600% from beginning of the year till date.  </p> </div> \
                      </div> \
             </html>", 'lxml')
-        crypto_processor.handle(soup)
+        crypto_processor.handle(soup, "TestSubReddit.com")
         self.assertTrue(mock_mongo_datastore.insert.call_count == 2)
 
     @mock.patch('com.src.persist.MongoDatastore.MongoDatastore')
@@ -98,7 +98,7 @@ class TestCryptoProcessorMethods(unittest.TestCase):
                     <div><p> LTC is great!</p> </div> \
                      </div> \
             </html>", 'lxml')
-        crypto_processor.handle(soup)
+        crypto_processor.handle(soup, "TestSubReddit.com")
         self.assertTrue(mock_mongo_datastore.insert.call_count == 2)
 
     @mock.patch('com.src.persist.MongoDatastore.MongoDatastore')
@@ -124,7 +124,7 @@ class TestCryptoProcessorMethods(unittest.TestCase):
                     <div><p> LTC is great!</p> </div> \
                      </div> \
             </html>", 'lxml')
-        crypto_processor.handle(soup)
+        crypto_processor.handle(soup, "TestSubReddit.com")
         self.assertTrue(mock_mongo_datastore.insert.call_count == 0)
 
     @mock.patch('com.src.persist.MongoDatastore.MongoDatastore')
@@ -149,8 +149,9 @@ class TestCryptoProcessorMethods(unittest.TestCase):
                     <div><p> LTC is great!</p> </div> \
                      </div> \
             </html>", 'lxml')
-        crypto_processor.handle(soup)
+        crypto_processor.handle(soup, "TestSubReddit.com")
         self.assertTrue(mock_mongo_datastore.insert.call_count == 3)
 
+    
 if __name__ == '__main__':
     unittest.main()

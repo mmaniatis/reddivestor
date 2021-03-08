@@ -1,4 +1,4 @@
-from com.src.Spider import Spider
+from com.src.SingleThreadSpider import SingleThreadSpider
 from com.src.CryptoProcessor import CryptoProcessor
 from com.src.network.ApiRequester import ApiRequester
 from com.src.persist.MongoDatastore import MongoDatastore
@@ -21,26 +21,30 @@ def engine_start():
     interval = 600 #seconds
 
     print("!!!! Spider Engine starting, initializing processors and spiders !!!!")
-    spider_cryptoCurrency = Spider(interval, 'https://www.reddit.com/r/CryptoCurrencies/new/', processor)
-    spider_cryptoCurrency.setUpDriver()
-    spider_cryptoCurrencyTrading = Spider(interval, 'https://www.reddit.com/r/CryptoCurrencyTrading/new/', processor)
-    spider_cryptoCurrencyTrading.setUpDriver()
-    spider_cryptoCryptoMarkets = Spider(interval, 'https://www.reddit.com/r/CryptoMarkets/new/', processor)
-    spider_cryptoCryptoMarkets.setUpDriver()
-
-    thread = threading.Thread(target=spider_cryptoCurrency.crawlAndRefresh, args=())
-    thread.daemon = True    
-
-    thread2 = threading.Thread(target=spider_cryptoCurrencyTrading.crawlAndRefresh, args=())
-    thread2.daemon = True
-
-    thread3 = threading.Thread(target=spider_cryptoCryptoMarkets.crawlAndRefresh, args=())
-    thread3.daemon = True
+    spider = SingleThreadSpider(interval, processor)
+    spider.setUpDriver()
+    spider.setUrlList(['https://www.reddit.com/r/CryptoCurrencies/new/', 'https://www.reddit.com/r/CryptoCurrencyTrading/new/', 'https://www.reddit.com/r/CryptoMarkets/new/'])
+    spider.crawlAndRefresh()
 
 
-    thread.start()
-    thread2.start()
-    thread3.start()
+    # MULTI-THREADED IMPLEMENTATION... NOT NEEDED YET AND DON'T WANT TO PAY FOR EXTRA CPU CORES ON AWS:
+    
+    # spider_cryptoCurrency = Spider(interval, 'https://www.reddit.com/r/CryptoCurrencies/new/', processor)
+    # spider_cryptoCurrency.setUpDriver()
+    # spider_cryptoCurrency.getUrl('https://www.reddit.com/r/CryptoCurrencies/new/')
+    # spider_cryptoCurrencyTrading = Spider(interval, 'https://www.reddit.com/r/CryptoCurrencyTrading/new/', processor)
+    # spider_cryptoCurrencyTrading.setUpDriver()
+    # spider_cryptoCryptoMarkets = Spider(interval, 'https://www.reddit.com/r/CryptoMarkets/new/', processor)
+    # spider_cryptoCryptoMarkets.setUpDriver()
+    # thread = threading.Thread(target=spider_cryptoCurrency.crawlAndRefresh, args=())
+    # thread.daemon = True    
+    # thread2 = threading.Thread(target=spider_cryptoCurrencyTrading.crawlAndRefresh, args=())
+    # thread2.daemon = True
+    # thread3 = threading.Thread(target=spider_cryptoCryptoMarkets.crawlAndRefresh, args=())
+    # thread3.daemon = True
+    # thread.start()
+    # thread2.start()
+    # thread3.start()
        
 
     
