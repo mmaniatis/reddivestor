@@ -23,7 +23,17 @@ def engine_start():
     print("!!!! Spider Engine starting, initializing processors and spiders !!!!")
     spider = SingleThreadSpider(interval, processor)
     spider.setUpDriver()
-    spider.setUrlList(['https://www.reddit.com/r/CryptoCurrencies/new/', 'https://www.reddit.com/r/CryptoCurrencyTrading/new/', 'https://www.reddit.com/r/CryptoMarkets/new/'])
+    spider.setUrlList([
+        'https://www.reddit.com/r/CryptoCurrencies/new/', 
+        'https://www.reddit.com/r/CryptoCurrencyTrading/new/', 
+        'https://www.reddit.com/r/CryptoMarkets/new/',
+        'https://www.reddit.com/r/CryptoMoonShots/new/',
+        'https://www.reddit.com/r/altcoin/new/',
+        'https://www.reddit.com/r/Crypto_General/new/',
+        'https://www.reddit.com/r/ico/new/',
+        'https://www.reddit.com/r/CryptoCurrencies/new/',
+        'https://www.reddit.com/r/CoinBase/new/',
+        'https://www.reddit.com/r/ledgerwallet/new/'])
     spider.crawlAndRefresh()
 
 
