@@ -31,7 +31,6 @@ def engine_start():
         'https://www.reddit.com/r/altcoin/new/',
         'https://www.reddit.com/r/Crypto_General/new/',
         'https://www.reddit.com/r/ico/new/',
-        'https://www.reddit.com/r/CryptoCurrencies/new/',
         'https://www.reddit.com/r/CoinBase/new/',
         'https://www.reddit.com/r/ledgerwallet/new/'])
     spider.crawlAndRefresh()
