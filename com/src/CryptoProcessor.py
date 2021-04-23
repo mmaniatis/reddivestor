@@ -13,7 +13,7 @@ class CryptoProcessor(Processor):
     seen_post_titles = None
     api_requester = None
     datastore = None
-    filter_list = ["A", "THE", ]
+    filter_list = ["A", "THE", "VIA"]
 
     def __init__(self, api_requester: ApiRequester, datastore: Datastore):
         super(CryptoProcessor, self).__init__()
