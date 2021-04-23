@@ -29,7 +29,7 @@ class CryptoProcessor(Processor):
             if(post not in self.seen_post_titles):
                 for word in post.split(" "):
                     cleaned_word = re.sub('[^A-Za-z0-9]+', '', word).strip()
-                    if (cleaned_word in self.coin_hash_table and self.coin_hash_table[cleaned_word] not in currently_seen_coins and not in self.filter_list):
+                    if ( (cleaned_word not in self.filter_list) and (cleaned_word in self.coin_hash_table) and (self.coin_hash_table[cleaned_word] not in currently_seen_coins) ):
                         current_coin = self.coin_hash_table[cleaned_word]
                         crypto_entry = CryptoEntry(post, current_coin, url, datetime.datetime.now())
                         self.datastore.insert(crypto_entry)         
