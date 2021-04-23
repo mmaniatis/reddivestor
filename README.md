@@ -1,5 +1,7 @@
 # Reddivestor
 
+Currently running in AWS via Elastic Beanstalk
+
 Micro-Service that will scrape/crawl reddit looking for mentions of crypto currencies (this list comes from CoinMarketCap API.)
 
 It will then process the mentions into a hash table containing the coin name, and the count. 
