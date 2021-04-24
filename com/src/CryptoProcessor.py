@@ -13,8 +13,8 @@ class CryptoProcessor(Processor):
     seen_post_titles = None
     api_requester = None
     datastore = None
-    filter_list = ["A", "THE", "VIA", "AMA", "TOKEN"]
-
+    # filter_list = ["A", "THE", "VIA", "AMA", "TOKEN"]
+    filter_list=[]
     def __init__(self, api_requester: ApiRequester, datastore: Datastore):
         super(CryptoProcessor, self).__init__()
         self.seen_post_titles = []
@@ -45,7 +45,7 @@ class CryptoProcessor(Processor):
             json = self.api_requester.get(
                 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
                 {'start':'1',
-                'limit':'5000',
+                'limit':'1000',
                 'convert':'USD'})
         except:
             print("Error in JSON request.")
