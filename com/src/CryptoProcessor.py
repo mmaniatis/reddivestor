@@ -45,7 +45,7 @@ class CryptoProcessor(Processor):
             json = self.api_requester.get(
                 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
                 {'start':'1',
-                'limit':'1000',
+                'limit':'350',
                 'convert':'USD'})
         except:
             print("Error in JSON request.")
