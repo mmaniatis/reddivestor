@@ -13,8 +13,10 @@ class CryptoProcessor(Processor):
     seen_post_titles = None
     api_requester = None
     datastore = None
-    # filter_list = ["A", "THE", "VIA", "AMA", "TOKEN"]
-    filter_list=[]
+    # Have to filter either the ticker symbol / coin name if it is too common in speech.
+    # Will revisit this at somepoint.
+    filter_list = ["A", "THE", "VIA", "AMA", "TOKEN", "JUST"]
+    
     def __init__(self, api_requester: ApiRequester, datastore: Datastore):
         super(CryptoProcessor, self).__init__()
         self.seen_post_titles = []
