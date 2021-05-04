@@ -15,7 +15,7 @@ class CryptoProcessor(Processor):
     datastore = None
     # Have to filter either the ticker symbol / coin name if it is too common in speech.
     # Will revisit this at somepoint.
-    filter_list = ["a", "the", "via", "ama", "token", "just"]
+    filter_list = ["a", "the", "via", "ama", "token", "just", "s", "on", "its", "can", "buy", "me", "like", "it"]
     
     def __init__(self, api_requester: ApiRequester, datastore: Datastore):
         super(CryptoProcessor, self).__init__()
@@ -28,10 +28,15 @@ class CryptoProcessor(Processor):
         for message_item in message.findAll(['p','h3']):
             post = message_item.text
             currently_seen_coins = []
+            
             if(post not in self.seen_post_titles):
+                
                 for word in post.split(" "):
-                    cleaned_word = re.sub('[^A-Za-z0-9]+', '', word).strip().lower()
-                    if ( (cleaned_word not in self.filter_list) and (cleaned_word in self.coin_hash_table) and (self.coin_hash_table[cleaned_word] not in currently_seen_coins) ):
+                    cleaned_word = re.sub('[^A-Za-z0-9]+', '', word).strip()
+                    if (
+                        (cleaned_word.lower() not in self.filter_list) 
+                    and (cleaned_word in self.coin_hash_table) 
+                    and (self.coin_hash_table[cleaned_word] not in currently_seen_coins) ):
                         current_coin = self.coin_hash_table[cleaned_word]
                         crypto_entry = CryptoEntry(post, current_coin, url, datetime.datetime.now())
                         self.datastore.insert(crypto_entry)         
@@ -47,7 +52,7 @@ class CryptoProcessor(Processor):
             json = self.api_requester.get(
                 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
                 {'start':'1',
-                'limit':'900',
+                'limit':'2000',
                 'convert':'USD'})
         except:
             print("Error in JSON request.")

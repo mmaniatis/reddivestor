@@ -18,6 +18,7 @@ class SingleThreadSpider(Spider):
                 self.getUrl(url)
                 pageSource = self.driver.page_source
                 self.process_soup(pageSource, url)
+                print("Current URL: " + url)
                 print("!!! process_soup() complete, hibernating for.. " + str(self.crawl_interval))
                 print("Refreshing page and re-crawling..")
             time.sleep(self.crawl_interval)
