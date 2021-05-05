@@ -15,7 +15,7 @@ class CryptoProcessor(Processor):
     datastore = None
     # Have to filter either the ticker symbol / coin name if it is too common in speech.
     # Will revisit this at somepoint.
-    filter_list = ["a", "the", "via", "ama", "token", "just", "s", "on", "its", "can", "buy", "me", "like", "it"]
+    filter_list = ["a", "the", "via", "ama", "token", "just", "s", "on", "its", "can", "buy", "me", "like", "it", "now", "fair", "launch", "for", "new", "coin", "you", "any", "dev", "rise"] 
     
     def __init__(self, api_requester: ApiRequester, datastore: Datastore):
         super(CryptoProcessor, self).__init__()
@@ -30,17 +30,22 @@ class CryptoProcessor(Processor):
             currently_seen_coins = []
             
             if(post not in self.seen_post_titles):
-                
-                for word in post.split(" "):
+                counter = 0;
+                postList = post.split(' ')
+                while(counter < len(postList) - 1):
+                    word = postList[counter]
                     cleaned_word = re.sub('[^A-Za-z0-9]+', '', word).strip()
-                    if (
-                        (cleaned_word.lower() not in self.filter_list) 
-                    and (cleaned_word in self.coin_hash_table) 
-                    and (self.coin_hash_table[cleaned_word] not in currently_seen_coins) ):
-                        current_coin = self.coin_hash_table[cleaned_word]
-                        crypto_entry = CryptoEntry(post, current_coin, url, datetime.datetime.now())
-                        self.datastore.insert(crypto_entry)         
-                        currently_seen_coins.append(current_coin)
+                    skipWord = False
+
+                    if(cleaned_word.lower() in self.filter_list):
+                        before = -1 if counter <= 0 else post[counter-1]
+                        after = -1 if counter >= len(post) else post[counter + 1]
+                        skipWord = self.skip_common_word(before, cleaned_word, after)
+
+                    if ((not skipWord) and (cleaned_word in self.coin_hash_table) and (self.coin_hash_table[cleaned_word] not in currently_seen_coins)):
+                        currently_seen_coins.append(self.process_coin(cleaned_word, post, url))
+
+                    counter = counter + 1
             self.seen_post_titles.append(post)
         
     #Purpose of method is to call api_requester, which will need to be refactored to take url as param.. but anyways,
@@ -73,3 +78,19 @@ class CryptoProcessor(Processor):
 
     def populate_coin_list_offline(self):
         self.coin_hash_table = COIN_DICT
+
+    def skip_common_word(self, before, commonWord, after):
+        #todo: think about Nano token. Ledger Nano. this problem.
+        if (after != -1 and (after == 'coin' or after == 'token' or after == 'swap' or after == 'protocol')):
+            return False
+        else:
+            return True
+    
+    def process_coin(self, cleaned_word, post, url):
+        current_coin = self.coin_hash_table[cleaned_word]
+        crypto_entry = CryptoEntry(post, current_coin, url, datetime.datetime.now())
+        try:
+            self.datastore.insert(crypto_entry)
+        except(e):
+            print(e)
+        return current_coin

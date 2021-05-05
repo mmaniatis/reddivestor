@@ -40,7 +40,7 @@ class TestCryptoProcessorMethods(unittest.TestCase):
                     <div><p> LTC is great!</p> </div> \
                      </div> \
             </html>", 'lxml')
-        crypto_processor.handle(soup, "TestSubReddit.com"))
+        crypto_processor.handle(soup, "TestSubReddit.com")
         self.assertTrue(mock_mongo_datastore.insert.call_count, 3)
 
     @mock.patch('com.src.persist.MongoDatastore.MongoDatastore')
