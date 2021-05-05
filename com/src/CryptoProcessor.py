@@ -15,7 +15,7 @@ class CryptoProcessor(Processor):
     datastore = None
     # Have to filter either the ticker symbol / coin name if it is too common in speech.
     # Will revisit this at somepoint.
-    filter_list = ["nano", "swap", "get", "id", "a", "the", "via", "ama", "token", "just", "s", "on", "its", "can", "buy", "me", "like", "it", "now", "fair", "launch", "for", "new", "coin", "you", "any", "dev", "rise"] 
+    filter_list = ["safe", "own", "easy", "nano", "swap", "get", "id", "a", "the", "via", "ama", "token", "just", "s", "on", "its", "can", "buy", "me", "like", "it", "now", "fair", "launch", "for", "new", "coin", "you", "any", "dev", "rise"] 
     
     def __init__(self, api_requester: ApiRequester, datastore: Datastore):
         super(CryptoProcessor, self).__init__()
@@ -39,7 +39,7 @@ class CryptoProcessor(Processor):
                     if(word.lower() in self.filter_list):
                         before = -1 if counter <= 0 else self.cleanWord(postList[counter-1])
                         after = -1 if counter >= len(post) else self.cleanWord(postList[counter+1])
-                        skipWord = self.skip_common_word(before, word, after)
+                        skipWord = self.skip_common_word(before.lower(), word.lower(), after.lower())
 
                     if ((not skipWord) and (word in self.coin_hash_table) and (self.coin_hash_table[word] not in currently_seen_coins)):
                         currently_seen_coins.append(self.process_coin(word, post, url))
@@ -80,9 +80,9 @@ class CryptoProcessor(Processor):
 
     def skip_common_word(self, before, commonWord, after):
         
-        if ((after == 'coin' or after == 'token' or after == 'swap' or after == 'protocol')):
+        if ((after == 'coin' or after == 'token' or after == 'swap' or after == 'protocol' or after == 'fi')):
             return False
-        elif (commonWord.lower() == 'nano' and (before.lower() != 'ledger')):
+        elif (commonWord == 'nano' and (before != 'ledger')):
             return False
         else:
             return True
