@@ -37,9 +37,9 @@ class CryptoProcessor(Processor):
                     skipWord = False
 
                     if(word.lower() in self.filter_list):
-                        before = -1 if counter <= 0 else self.cleanWord(postList[counter-1])
-                        after = -1 if counter >= len(post) else self.cleanWord(postList[counter+1])
-                        skipWord = self.skip_common_word(before.lower(), word.lower(), after.lower())
+                        before = -1 if counter <= 0 else self.cleanWord(postList[counter-1]).lower()
+                        after = -1 if counter >= len(post) else self.cleanWord(postList[counter+1]).lower()
+                        skipWord = self.skip_common_word(before, word.lower(), after)
 
                     if ((not skipWord) and (word in self.coin_hash_table) and (self.coin_hash_table[word] not in currently_seen_coins)):
                         currently_seen_coins.append(self.process_coin(word, post, url))
