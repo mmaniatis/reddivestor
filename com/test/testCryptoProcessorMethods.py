@@ -152,6 +152,21 @@ class TestCryptoProcessorMethods(unittest.TestCase):
         crypto_processor.handle(soup, "TestSubReddit.com")
         self.assertTrue(mock_mongo_datastore.insert.call_count == 3)
 
-    
+    @mock.patch('com.src.persist.MongoDatastore.MongoDatastore')
+    @mock.patch('com.src.network.ApiRequester.ApiRequester')
+    def testNanoMention(self, mock_api_requester,mock_mongo_datastore):
+        crypto_processor = CryptoProcessor(mock_api_requester, mock_mongo_datastore)
+        mock_mongo_datastore.get.return_value = None
+        mock_api_requester.get.return_value = {'data': [{'name': 'Nano', 'symbol':'NANO'}, {'name': 'Ethereum', 'symbol':'ETH'}, {'name': 'Chainlink', 'symbol':'LINK'}] }
+        crypto_processor.populate_seen_post_titles()
+        crypto_processor.populate_coin_hash()
+        soup = BeautifulSoup("<html> \
+                <h3>I am using the Ledger Nano S these days!</h3> \
+                    <div> \
+                    <div><p> NANO is great!</p> </div> \
+                     </div> \
+            </html>", 'lxml')
+        crypto_processor.handle(soup, "TestSubReddit.com")
+        self.assertEquals(mock_mongo_datastore.insert.call_count,  1)
 if __name__ == '__main__':
     unittest.main()

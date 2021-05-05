@@ -15,7 +15,7 @@ class CryptoProcessor(Processor):
     datastore = None
     # Have to filter either the ticker symbol / coin name if it is too common in speech.
     # Will revisit this at somepoint.
-    filter_list = ["swap", "get", "id", "a", "the", "via", "ama", "token", "just", "s", "on", "its", "can", "buy", "me", "like", "it", "now", "fair", "launch", "for", "new", "coin", "you", "any", "dev", "rise"] 
+    filter_list = ["nano", "swap", "get", "id", "a", "the", "via", "ama", "token", "just", "s", "on", "its", "can", "buy", "me", "like", "it", "now", "fair", "launch", "for", "new", "coin", "you", "any", "dev", "rise"] 
     
     def __init__(self, api_requester: ApiRequester, datastore: Datastore):
         super(CryptoProcessor, self).__init__()
@@ -33,17 +33,16 @@ class CryptoProcessor(Processor):
                 counter = 0;
                 postList = post.split(' ')
                 while(counter < len(postList) - 1):
-                    word = postList[counter]
-                    cleaned_word = re.sub('[^A-Za-z0-9]+', '', word).strip()
+                    word = self.cleanWord(postList[counter])
                     skipWord = False
 
-                    if(cleaned_word.lower() in self.filter_list):
-                        before = -1 if counter <= 0 else post[counter-1]
-                        after = -1 if counter >= len(post) else post[counter + 1]
-                        skipWord = self.skip_common_word(before, cleaned_word, after)
+                    if(word.lower() in self.filter_list):
+                        before = -1 if counter <= 0 else self.cleanWord(postList[counter-1])
+                        after = -1 if counter >= len(post) else self.cleanWord(postList[counter+1])
+                        skipWord = self.skip_common_word(before, word, after)
 
-                    if ((not skipWord) and (cleaned_word in self.coin_hash_table) and (self.coin_hash_table[cleaned_word] not in currently_seen_coins)):
-                        currently_seen_coins.append(self.process_coin(cleaned_word, post, url))
+                    if ((not skipWord) and (word in self.coin_hash_table) and (self.coin_hash_table[word] not in currently_seen_coins)):
+                        currently_seen_coins.append(self.process_coin(word, post, url))
 
                     counter = counter + 1
             self.seen_post_titles.append(post)
@@ -80,8 +79,10 @@ class CryptoProcessor(Processor):
         self.coin_hash_table = COIN_DICT
 
     def skip_common_word(self, before, commonWord, after):
-        #todo: think about Nano token. Ledger Nano. this problem.
-        if (after != -1 and (after == 'coin' or after == 'token' or after == 'swap' or after == 'protocol')):
+        
+        if ((after == 'coin' or after == 'token' or after == 'swap' or after == 'protocol')):
+            return False
+        elif (commonWord.lower() == 'nano' and (before.lower() != 'ledger')):
             return False
         else:
             return True
@@ -94,3 +95,6 @@ class CryptoProcessor(Processor):
         except(e):
             print(e)
         return current_coin
+
+    def cleanWord(self, word):
+        return  re.sub('[^A-Za-z0-9]+', '', word).strip()
