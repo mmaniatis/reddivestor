@@ -167,6 +167,6 @@ class TestCryptoProcessorMethods(unittest.TestCase):
                      </div> \
             </html>", 'lxml')
         crypto_processor.handle(soup, "TestSubReddit.com")
-        self.assertEquals(mock_mongo_datastore.insert.call_count,  1)
+        self.assertEqual(mock_mongo_datastore.insert.call_count,  1)
 if __name__ == '__main__':
     unittest.main()

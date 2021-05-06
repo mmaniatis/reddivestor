@@ -82,7 +82,7 @@ class CryptoProcessor(Processor):
         
         if ((after == 'coin' or after == 'token' or after == 'swap' or after == 'protocol' or after == 'fi')):
             return False
-        elif (commonWord == 'nano' and (before != 'ledger')):
+        elif (commonWord == 'nano' and (before != 'ledger' and after != 's' and after != 'x')):
             return False
         else:
             return True
