@@ -15,7 +15,7 @@ class CryptoProcessor(Processor):
     datastore = None
     # Have to filter either the ticker symbol / coin name if it is too common in speech.
     # Will revisit this at somepoint.
-    filter_list = ["safe", "own", "easy", "nano", "swap", "get", "id", "a", "the", "via", "ama", "token", "just", "s", "on", "its", "can", "buy", "me", "like", "it", "now", "fair", "launch", "for", "new", "coin", "you", "any", "dev", "rise"] 
+    filter_list = ["up", "real", "pre", "gem", "free", "safe", "own", "easy", "nano", "swap", "get", "id", "a", "the", "via", "ama", "token", "just", "s", "on", "its", "can", "buy", "me", "like", "it", "now", "fair", "launch", "for", "new", "coin", "you", "any", "dev", "rise"] 
     
     def __init__(self, api_requester: ApiRequester, datastore: Datastore):
         super(CryptoProcessor, self).__init__()
