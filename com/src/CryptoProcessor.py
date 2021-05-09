@@ -1,50 +1,46 @@
 from .Processor import Processor
+from .WordFilter import WordFilter
+from .Utility import Utility
 from bs4 import BeautifulSoup
 from com.src.network.ApiRequester import ApiRequester
 from com.src.persist.Datastore import Datastore
 from com.src.model.CryptoEntry import CryptoEntry
-from com.src.coin_hash_constant import COIN_DICT
+from com.src.coin_hash_constant import COIN_DICT, FILTER_LIST
 import datetime
 from datetime import timedelta
-import re
 
 class CryptoProcessor(Processor):
     coin_hash_table = None
     seen_post_titles = None
     api_requester = None
     datastore = None
-    # Have to filter either the ticker symbol / coin name if it is too common in speech.
-    # Will revisit this at somepoint.
-    filter_list = ["up", "real", "pre", "gem", "free", "safe", "own", "easy", "nano", "swap", "get", "id", "a", "the", "via", "ama", "token", "just", "s", "on", "its", "can", "buy", "me", "like", "it", "now", "fair", "launch", "for", "new", "coin", "you", "any", "dev", "rise"] 
-    
+    wordFilter = None
+
     def __init__(self, api_requester: ApiRequester, datastore: Datastore):
         super(CryptoProcessor, self).__init__()
         self.seen_post_titles = []
         self.coin_hash_table = {}
         self.api_requester = api_requester
         self.datastore = datastore
-
-    def handle(self, message: BeautifulSoup, url: str):
-        for message_item in message.findAll(['p','h3']):
-            post = message_item.text
+        self.wordFilter = WordFilter()
+ 
+    def handle(self, soup: BeautifulSoup, url: str):
+        for htmlElement in soup.findAll(['p','h3']):
+            post = htmlElement.text
             currently_seen_coins = []
             
             if(post not in self.seen_post_titles):
-                counter = 0;
+                index = 0;
                 postList = post.split(' ')
-                while(counter < len(postList) - 1):
-                    word = self.cleanWord(postList[counter])
-                    skipWord = False
-
-                    if(word.lower() in self.filter_list):
-                        before = -1 if counter <= 0 else self.cleanWord(postList[counter-1]).lower()
-                        after = -1 if counter >= len(post) else self.cleanWord(postList[counter+1]).lower()
-                        skipWord = self.skip_common_word(before, word.lower(), after)
-
-                    if ((not skipWord) and (word in self.coin_hash_table) and (self.coin_hash_table[word] not in currently_seen_coins)):
+                while(index < len(postList) - 1):
+                    word = Utility.cleanWord(postList[index])
+                    
+                    if ((not WordFilter.handle(word, postList, index)) 
+                        and (word in self.coin_hash_table) 
+                        and (self.coin_hash_table[word] not in currently_seen_coins)):
                         currently_seen_coins.append(self.process_coin(word, post, url))
 
-                    counter = counter + 1
+                    index = index + 1
             self.seen_post_titles.append(post)
         
     #Purpose of method is to call api_requester, which will need to be refactored to take url as param.. but anyways,
@@ -78,15 +74,6 @@ class CryptoProcessor(Processor):
     def populate_coin_list_offline(self):
         self.coin_hash_table = COIN_DICT
 
-    def skip_common_word(self, before, commonWord, after):
-        
-        if ((after == 'coin' or after == 'token' or after == 'swap' or after == 'protocol' or after == 'fi')):
-            return False
-        elif (commonWord == 'nano' and (before != 'ledger' and after != 's' and after != 'x')):
-            return False
-        else:
-            return True
-    
     def process_coin(self, cleaned_word, post, url):
         current_coin = self.coin_hash_table[cleaned_word]
         crypto_entry = CryptoEntry(post, current_coin, url, datetime.datetime.now())
@@ -95,6 +82,3 @@ class CryptoProcessor(Processor):
         except(e):
             print(e)
         return current_coin
-
-    def cleanWord(self, word):
-        return  re.sub('[^A-Za-z0-9]+', '', word).strip()

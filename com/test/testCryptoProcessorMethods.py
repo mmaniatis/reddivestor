@@ -168,5 +168,23 @@ class TestCryptoProcessorMethods(unittest.TestCase):
             </html>", 'lxml')
         crypto_processor.handle(soup, "TestSubReddit.com")
         self.assertEqual(mock_mongo_datastore.insert.call_count,  1)
+
+    @mock.patch('com.src.persist.MongoDatastore.MongoDatastore')
+    @mock.patch('com.src.network.ApiRequester.ApiRequester')
+    def testMoneySignInName(self, mock_api_requester,mock_mongo_datastore):
+        crypto_processor = CryptoProcessor(mock_api_requester, mock_mongo_datastore)
+        mock_mongo_datastore.get.return_value = None
+        mock_api_requester.get.return_value = {'data': [{'name': 'Nano', 'symbol':'NANO'}, {'name': 'Ethereum', 'symbol':'ETH'}, {'name': 'ForTube', 'symbol':'FOR'}] }
+        crypto_processor.populate_seen_post_titles()
+        crypto_processor.populate_coin_hash()
+        soup = BeautifulSoup("<html> \
+                <h3>I think FOR coin will really be a great coin.</h3> \
+                    <div> \
+                    <div><p> $FOR coin is always rising.!</p> </div> \
+                     </div> \
+            </html>", 'lxml')
+        crypto_processor.handle(soup, "TestSubReddit.com")
+        self.assertEqual(mock_mongo_datastore.insert.call_count,  2)
+       
 if __name__ == '__main__':
     unittest.main()
