@@ -34,12 +34,8 @@ class CryptoProcessor(Processor):
                 postList = post.split(' ')
                 while(index < len(postList) - 1):
                     word = Utility.cleanWord(postList[index])
-                    
-                    if ((not WordFilter.handle(word, postList, index)) 
-                        and (word in self.coin_hash_table) 
-                        and (self.coin_hash_table[word] not in currently_seen_coins)):
+                    if ((word in self.coin_hash_table) and (self.coin_hash_table[word] not in currently_seen_coins)):
                         currently_seen_coins.append(self.process_coin(word, post, url))
-
                     index = index + 1
             self.seen_post_titles.append(post)
         
@@ -61,8 +57,8 @@ class CryptoProcessor(Processor):
             if json != None:
                 data = json['data']
                 for coin in data:
-                    self.coin_hash_table[coin['name']] = coin['name']
-                    self.coin_hash_table[coin['symbol']] = coin['name']
+                    self.coin_hash_table[coin['name'].lower()] = coin['name']
+                    self.coin_hash_table['$' + coin['symbol'].lower()] = coin['name']
     
     def populate_seen_post_titles(self):
         # Append posts from past 3 days to ensure absolutely no duplicates.
