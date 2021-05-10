@@ -23,7 +23,7 @@ class TestCryptoProcessorMethods(unittest.TestCase):
     @mock.patch('com.src.persist.MongoDatastore.MongoDatastore')
     @mock.patch('com.src.network.ApiRequester.ApiRequester')
     def test_handle(self, mock_api_requester, mock_mongo_datastore):
-        mock_api_requester.get.return_value = {'data': [{'name': 'Litecoin', 'symbol':'LTC'}, {'name': 'Ethereum', 'symbol':'ETH'}, {'name': 'Chainlink', 'symbol':'LINK'}] }
+        mock_api_requester.get.return_value = {'data': [{'name': 'Litecoin', 'symbol':'LTC'}, {'name': 'Ethereum', 'symbol':'ETH'}, {'name': 'Chainlink', 'symbol':'LINK'}, {'name': 'Bitcoin Cash', 'symbol': 'BCH'}] }
         crypto_processor = CryptoProcessor(mock_api_requester, mock_mongo_datastore)
         crypto_processor.populate_coin_hash()
         soup = BeautifulSoup("<html> \
@@ -31,17 +31,17 @@ class TestCryptoProcessorMethods(unittest.TestCase):
                     <div> \
                     <div><p> Insert dummy text here </p> </div> \
                      </div> \
-                <h3>I Like LINK because i like defi</h3> \
+                <h3>I Like $LINK because i like defi</h3> \
                     <div> \
                     <div><p> Do you like it too? </p> </div> \
                      </div> \
-                <h3>I like coins</h3> \
+                <h3>Bitcoin Cash is awesome.. coins</h3> \
                     <div> \
-                    <div><p> LTC is great!</p> </div> \
+                    <div><p> $LTC is great!</p> </div> \
                      </div> \
             </html>", 'lxml')
         crypto_processor.handle(soup, "TestSubReddit.com")
-        self.assertTrue(mock_mongo_datastore.insert.call_count, 3)
+        self.assertEquals(mock_mongo_datastore.insert.call_count, 4)
 
     @mock.patch('com.src.persist.MongoDatastore.MongoDatastore')
     @mock.patch('com.src.network.ApiRequester.ApiRequester')
